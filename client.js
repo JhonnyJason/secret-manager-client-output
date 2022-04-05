@@ -9,13 +9,9 @@ import tbut from "thingy-byte-utils";
 
 import secUtl from "secret-manager-crypto-utils";
 
-import * as secretmanagerinterface from "./secretmanagerinterface.js";
-
-import * as network from "./network.js";
+import * as network from "./secretmanagerinterface.js";
 
 import * as timestampCreator from "./validatabletimestampmodule.js";
-
-Object.assign(network, secretmanagerinterface);
 
 //endregion
 
