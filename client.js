@@ -9,7 +9,7 @@ import tbut from "thingy-byte-utils";
 
 import secUtl from "secret-manager-crypto-utils";
 
-import * as network from "./secretmanagerinterface.js";
+import * as sci from "./secretmanagementinterface.js";
 
 import * as timestampCreator from "./validatabletimestampmodule.js";
 
@@ -138,7 +138,7 @@ createSignature = async function(payload, route, secretKeyHex) {
 //endregion
 
 //###########################################################
-//region effectiveNetworkCommunication
+//region effectivesciCommunication
 addNodeId = async function(client) {
   var payload, publicKey, route, secretKey, server, signature, timestamp;
   server = client.serverURL;
@@ -148,7 +148,7 @@ addNodeId = async function(client) {
   payload = {publicKey, timestamp};
   route = "/addNodeId";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.addNodeId(server, publicKey, timestamp, signature));
+  return (await sci.addNodeId(server, publicKey, timestamp, signature));
 };
 
 //###########################################################
@@ -161,7 +161,7 @@ getSecretSpace = async function(client) {
   payload = {publicKey, timestamp};
   route = "/getSecretSpace";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.getSecretSpace(server, publicKey, timestamp, signature));
+  return (await sci.getSecretSpace(server, publicKey, timestamp, signature));
 };
 
 getSecret = async function(secretId, client) {
@@ -173,7 +173,7 @@ getSecret = async function(secretId, client) {
   payload = {publicKey, secretId, timestamp};
   route = "/getSecret";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.getSecret(server, publicKey, secretId, timestamp, signature));
+  return (await sci.getSecret(server, publicKey, secretId, timestamp, signature));
 };
 
 //###########################################################
@@ -186,7 +186,7 @@ setSecret = async function(secretId, secret, client) {
   payload = {publicKey, secretId, secret, timestamp};
   route = "/setSecret";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.setSecret(server, publicKey, secretId, secret, timestamp, signature));
+  return (await sci.setSecret(server, publicKey, secretId, secret, timestamp, signature));
 };
 
 deleteSecret = async function(secretId, client) {
@@ -198,7 +198,7 @@ deleteSecret = async function(secretId, client) {
   payload = {publicKey, secretId, timestamp};
   route = "/deleteSecret";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.deleteSecret(server, publicKey, secretId, timestamp, signature));
+  return (await sci.deleteSecret(server, publicKey, secretId, timestamp, signature));
 };
 
 //###########################################################
@@ -211,7 +211,7 @@ acceptSecretsFrom = async function(fromId, client) {
   payload = {publicKey, fromId, timestamp};
   route = "/startAcceptingSecretsFrom";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.startAcceptingSecretsFrom(server, publicKey, fromId, timestamp, signature));
+  return (await sci.startAcceptingSecretsFrom(server, publicKey, fromId, timestamp, signature));
 };
 
 stopAcceptSecretsFrom = async function(fromId, client) {
@@ -223,7 +223,7 @@ stopAcceptSecretsFrom = async function(fromId, client) {
   payload = {publicKey, fromId, timestamp};
   route = "/stopAcceptingSecretsFrom";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.stopAcceptingSecretsFrom(server, publicKey, fromId, timestamp, signature));
+  return (await sci.stopAcceptingSecretsFrom(server, publicKey, fromId, timestamp, signature));
 };
 
 //###########################################################
@@ -236,7 +236,7 @@ shareSecretTo = async function(shareToId, secretId, secret, client) {
   payload = {publicKey, shareToId, secretId, secret, timestamp};
   route = "/shareSecretTo";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.shareSecretTo(server, publicKey, shareToId, secretId, secret, timestamp, signature));
+  return (await sci.shareSecretTo(server, publicKey, shareToId, secretId, secret, timestamp, signature));
 };
 
 deleteSharedSecret = async function(sharedToId, secretId, client) {
@@ -248,7 +248,7 @@ deleteSharedSecret = async function(sharedToId, secretId, client) {
   payload = {publicKey, sharedToId, secretId, timestamp};
   route = "/deleteSharedSecret";
   signature = (await createSignature(payload, route, secretKey));
-  return (await network.deleteSharedSecret(server, publicKey, sharedToId, secretId, timestamp, signature));
+  return (await sci.deleteSharedSecret(server, publicKey, sharedToId, secretId, timestamp, signature));
 };
 
 //endregion
