@@ -5,9 +5,9 @@ var acceptSecretsFrom, addNodeId, createSignature, decrypt, deleteSecret, delete
 
 import * as noble from "@noble/ed25519";
 
-import tbut from "thingy-byte-utils";
+import * as tbut from "thingy-byte-utils";
 
-import secUtl from "secret-manager-crypto-utils";
+import * as secUtl from "secret-manager-crypto-utils";
 
 import * as sci from "./secretmanagementinterface.js";
 
@@ -21,6 +21,8 @@ export var Client = class Client {
     this.secretKeyHex = secretKeyHex1;
     this.publicKeyHex = publicKeyHex;
     this.serverURL = serverURL1;
+    this.secretKey = tbut.hexToBytes(this.secretKeyHex);
+    this.publicKey = tbut.hexToBytes(this.publicKeyHex);
     this.ready = addNodeId(this);
   }
 
@@ -33,14 +35,14 @@ export var Client = class Client {
     var secret;
     await this.ready;
     secret = (await getSecretSpace(this));
-    return (await decrypt(secret, this.secretKeyHex));
+    return (await decrypt(secret, this.secretKey));
   }
 
   async getSecret(secretId) {
     var secret;
     await this.ready;
     secret = (await getSecret(secretId, this));
-    return (await decrypt(secret, this.secretKeyHex));
+    return (await decrypt(secret, this.secretKey));
   }
 
   async getSecretFrom(secretId, fromId) {
@@ -48,12 +50,12 @@ export var Client = class Client {
     await this.ready;
     secretId = fromId + "." + secretId;
     secret = (await getSecret(secretId, this));
-    return (await decrypt(secret, this.secretKeyHex));
+    return (await decrypt(secret, this.secretKey));
   }
 
   async setSecret(secretId, secret) {
     await this.ready;
-    secret = (await encrypt(secret, this.publicKeyHex));
+    secret = (await encrypt(secret, this.publicKey));
     return (await setSecret(secretId, secret, this));
   }
 
@@ -95,7 +97,7 @@ newSecretBytes = noble.utils.randomPrivateKey;
 //###########################################################
 decrypt = async function(content, secretKey) {
   var err;
-  content = (await secUtl.asymetricDecrypt(content, secretKey));
+  content = (await secUtl.asymmetricDecrypt(content, secretKey));
   content = secUtl.removeSalt(content);
   try {
     content = JSON.parse(content);
@@ -104,7 +106,7 @@ decrypt = async function(content, secretKey) {
     return content; // was no stringified Object
   }
   if (content.encryptedContent != null) {
-    content = (await secUtl.asymetricDecrypt(content, secretKey));
+    content = (await secUtl.asymmetricDecrypt(content, secretKey));
     content = secUtl.removeSalt(content);
     try {
       content = JSON.parse(content);
@@ -124,7 +126,7 @@ encrypt = async function(content, publicKey) {
   }
   salt = secUtl.createRandomLengthSalt();
   content = salt + content;
-  content = (await secUtl.asymetricEncrypt(content, publicKey));
+  content = (await secUtl.asymmetricEncrypt(content, publicKey));
   return JSON.stringify(content);
 };
 
