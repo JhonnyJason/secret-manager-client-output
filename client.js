@@ -105,7 +105,7 @@ decrypt = async function(content, secretKey) {
     err = error;
     return content; // was no stringified Object
   }
-  if (content.encryptedContent != null) {
+  if ((content.encryptedContent != null) || (content.encryptedContentHex != null)) {
     content = (await secUtl.asymmetricDecrypt(content, secretKey));
     content = secUtl.removeSalt(content);
     try {
