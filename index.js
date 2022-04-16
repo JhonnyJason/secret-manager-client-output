@@ -6,7 +6,7 @@ import {
   Client
 } from "./client.js";
 
-import * as noble from "@noble/ed25519";
+import * as secUtl from "secret-manager-crypto-utils";
 
 import * as tbut from "thingy-byte-utils";
 
@@ -56,7 +56,7 @@ ensureHexKey = function(key) {
     if (key.length !== 32) {
       throw new Error("Invalid key length!");
     }
-    key = bytesToHex(key);
+    key = tbut.bytesToHex(key);
   }
   if (typeof key !== "string") {
     throw new Error("Invalid type, hexString or Uint8Array expected!");
