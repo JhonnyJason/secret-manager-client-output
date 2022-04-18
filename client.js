@@ -3,11 +3,9 @@
 //region modules
 var acceptSecretsFrom, addNodeId, createSignature, decrypt, deleteSecret, deleteSharedSecret, encrypt, getSecret, getSecretSpace, removeNodeId, setSecret, shareSecretTo, stopAcceptSecretsFrom;
 
-import * as noble from "@noble/ed25519";
+import * as secUtl from "secret-manager-crypto-utils";
 
 import * as tbut from "thingy-byte-utils";
-
-import * as secUtl from "secret-manager-crypto-utils";
 
 import * as sci from "./secretmanagementinterface.js";
 
