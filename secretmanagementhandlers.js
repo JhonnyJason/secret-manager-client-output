@@ -67,7 +67,12 @@ export var getSecret = async function(publicKey, secretId, timestamp, signature)
 
 
 //###########################################################
-export var setSecret = async function(publicKey, secretId, secret, timestamp, signature) {
+export var setSecret = async function(publicKey, secretId, secret, timestamp, signature, req) {
+  var urlToSync;
+  urlToSync = service.getURLToSync(publicKey);
+  if (urlToSync != null) {
+    syncToURL(req);
+  }
   await service.setSecret(publicKey, secretId, secret);
   return {
     ok: true
@@ -75,7 +80,7 @@ export var setSecret = async function(publicKey, secretId, secret, timestamp, si
 };
 
 //###########################################################
-export var deleteSecret = async function(publicKey, secretId, timestamp, signature) {
+export var deleteSecret = async function(publicKey, secretId, timestamp, signature, reqData) {
   await service.deleteSecret(publicKey, secretId);
   return {
     ok: true
@@ -83,7 +88,7 @@ export var deleteSecret = async function(publicKey, secretId, timestamp, signatu
 };
 
 //###########################################################
-export var startAcceptingSecretsFrom = async function(publicKey, fromId, timestamp, signature) {
+export var startAcceptingSecretsFrom = async function(publicKey, fromId, timestamp, signature, reqData) {
   await service.addSubSpaceFor(publicKey, fromId);
   return {
     ok: true
