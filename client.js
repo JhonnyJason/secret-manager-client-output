@@ -15,13 +15,20 @@ import * as timestampCreator from "./validatabletimestampmodule.js";
 
   //###########################################################
 export var Client = class Client {
-  constructor(secretKeyHex1, publicKeyHex, serverURL1) {
+  constructor(secretKeyHex1, publicKeyHex, serverURL1, closureDate1, authCode) {
     this.secretKeyHex = secretKeyHex1;
     this.publicKeyHex = publicKeyHex;
     this.serverURL = serverURL1;
+    this.closureDate = closureDate1;
+    if (authCode == null) {
+      authCode = "";
+    }
+    if (this.closureDate == null) {
+      this.closureDate = 0;
+    }
     this.secretKeyBytes = tbut.hexToBytes(this.secretKeyHex);
     this.publicKeyBytes = tbut.hexToBytes(this.publicKeyHex);
-    this.ready = addNodeId(this);
+    this.ready = addNodeId(this, authCode);
   }
 
   updateServerURL(serverURL) {
@@ -142,16 +149,17 @@ createSignature = async function(payload, route, secretKeyHex) {
 
 //###########################################################
 //region effectivesciCommunication
-addNodeId = async function(client) {
-  var payload, publicKey, route, secretKey, server, signature, timestamp;
+addNodeId = async function(client, authCode) {
+  var closureDate, payload, publicKey, route, secretKey, server, signature, timestamp;
   server = client.serverURL;
   secretKey = client.secretKeyHex;
   publicKey = client.publicKeyHex;
   timestamp = timestampCreator.create();
-  payload = {publicKey, timestamp};
+  closureDate = client.closureDate;
+  payload = {authCode, publicKey, closureDate, timestamp};
   route = "/addNodeId";
   signature = (await createSignature(payload, route, secretKey));
-  return (await sci.addNodeId(server, publicKey, timestamp, signature));
+  return (await sci.addNodeId(server, authCode, publicKey, closureDate, timestamp, signature));
 };
 
 removeNodeId = async function(client) {

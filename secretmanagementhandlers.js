@@ -9,13 +9,13 @@ export var setService = function(serviceToSet) {
 };
 
 //###########################################################
-export var addNodeId = async function(publicKey, timestamp, signature) {
-  await service.addNodeId(publicKey);
+export var addNodeId = async function(authCode, publicKey, closureDate, timestamp, signature) {
+  await service.assertLegalAction(authCode, "addNodeId");
+  await service.addNodeId(publicKey, closureDate);
   return {
     ok: true
   };
 };
-
 
 //###########################################################
 export var removeNodeId = async function(publicKey, timestamp, signature) {

@@ -6,7 +6,7 @@ import * as h from "./secretmanagementhandlers";
 export var addNodeId = async function(req, res) {
   var err, response;
   try {
-    response = (await h.addNodeId(req.body.publicKey, req.body.timestamp, req.body.signature));
+    response = (await h.addNodeId(req.body.authCode, req.body.publicKey, req.body.closureDate, req.body.timestamp, req.body.signature));
     res.send(response);
   } catch (error) {
     err = error;
