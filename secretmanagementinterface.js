@@ -4,9 +4,9 @@ import {
 } from "thingy-network-base";
 
 //###########################################################
-export var addNodeId = function(sciURL, publicKey, timestamp, signature) {
+export var addNodeId = function(sciURL, authCode, publicKey, closureDate, timestamp, signature) {
   var requestObject, requestURL;
-  requestObject = {publicKey, timestamp, signature};
+  requestObject = {authCode, publicKey, closureDate, timestamp, signature};
   requestURL = sciURL + "/addNodeId";
   return postData(requestURL, requestObject);
 };
