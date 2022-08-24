@@ -45,10 +45,10 @@ export var createClient = function(o) {
     }
     if (o.authCode != null) {
       try {
-        authCode = ensure32BytesHex(options.authCode);
+        authCode = ensure32BytesHex(o.authCode);
       } catch (error) {
         err = error;
-        throw new Error("error occured in snsureing the correct format of authCode!\n: " + err.message);
+        throw new Error("error occured in ensureing the correct format of authCode!\n: " + err.message);
       }
     } else {
       authCode = null;
@@ -58,10 +58,10 @@ export var createClient = function(o) {
     publicKeyHex = null;
     if (o.authCode != null) {
       try {
-        authCode = ensure32BytesHex(options.authCode);
+        authCode = ensure32BytesHex(o.authCode);
       } catch (error) {
         err = error;
-        throw new Error("error occured in snsureing the correct format of authCode!\n: " + err.message);
+        throw new Error("error occured in ensureing the correct format of authCode!\n: " + err.message);
       }
     } else {
       authCode = defaultAuthCode;
@@ -72,12 +72,14 @@ export var createClient = function(o) {
   } else {
     closureDate = null;
   }
+  console.log("hello!");
   return new Client(secretKeyHex, publicKeyHex, o.serverURL, closureDate, authCode);
 };
 
 //###########################################################
 ensure32BytesHex = function(key) {
   var j, len1;
+  // real code to check on client already
   if (key instanceof Uint8Array) {
     if (key.length !== 32) {
       throw new Error("Invalid length!");

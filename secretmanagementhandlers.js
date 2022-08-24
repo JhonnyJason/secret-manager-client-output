@@ -10,7 +10,6 @@ export var setService = function(serviceToSet) {
 
 //###########################################################
 export var addNodeId = async function(authCode, publicKey, closureDate, timestamp, signature) {
-  await service.assertLegalAction(authCode, "addNodeId");
   await service.addNodeId(publicKey, closureDate);
   return {
     ok: true

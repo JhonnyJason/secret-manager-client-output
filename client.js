@@ -168,10 +168,11 @@ prepareNewKeys = async function(client) {
 //endregion
 
 //###########################################################
-//region effectivesciCommunication
+//region effectiveSCI
 addNodeId = async function(client, authCode) {
-  var closureDate, payload, publicKey, route, secretKey, server, signature, timestamp;
+  var closureDate, payload, publicKey, response, route, secretKey, server, signature, timestamp;
   await client.keysReady;
+  console.log("addNodeId called!");
   server = client.serverURL;
   secretKey = client.secretKeyHex;
   publicKey = client.publicKeyHex;
@@ -180,12 +181,17 @@ addNodeId = async function(client, authCode) {
   payload = {authCode, publicKey, closureDate, timestamp};
   route = "/addNodeId";
   signature = (await createSignature(payload, route, secretKey));
-  // console.log("created Signature!")
-  return (await sci.addNodeId(server, authCode, publicKey, closureDate, timestamp, signature));
+  console.log("created Signature!");
+  response = (await sci.addNodeId(server, authCode, publicKey, closureDate, timestamp, signature));
+  if (response.ok) {
+    return true;
+  } else {
+    throw new Error("addNodeId failed: " + response.error);
+  }
 };
 
 removeNodeId = async function(client) {
-  var payload, publicKey, route, secretKey, server, signature, timestamp;
+  var payload, publicKey, response, route, secretKey, server, signature, timestamp;
   server = client.serverURL;
   publicKey = client.publicKeyHex;
   secretKey = client.secretKeyHex;
@@ -193,7 +199,12 @@ removeNodeId = async function(client) {
   payload = {publicKey, timestamp};
   route = "/removeNodeId";
   signature = (await createSignature(payload, route, secretKey));
-  return (await sci.removeNodeId(server, publicKey, timestamp, signature));
+  response = (await sci.removeNodeId(server, publicKey, timestamp, signature));
+  if (response.ok) {
+    return true;
+  } else {
+    throw new Error("removeNodeId failed: " + response.error);
+  }
 };
 
 //###########################################################
