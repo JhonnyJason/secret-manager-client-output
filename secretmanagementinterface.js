@@ -4,90 +4,110 @@ import {
 } from "thingy-network-base";
 
 //###########################################################
-export var addNodeId = function(sciURL, authCode, publicKey, closureDate, timestamp, signature) {
+export var addNodeId = function(sciURL, authCode, publicKey, closureDate, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {authCode, publicKey, closureDate, timestamp, signature};
+  requestObject = {authCode, publicKey, closureDate, timestamp, signature, nonce};
   requestURL = sciURL + "/addNodeId";
   return postData(requestURL, requestObject);
 };
 
-export var removeNodeId = function(sciURL, publicKey, timestamp, signature) {
+export var removeNodeId = function(sciURL, publicKey, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, timestamp, signature};
+  requestObject = {publicKey, timestamp, signature, nonce};
   requestURL = sciURL + "/removeNodeId";
   return postData(requestURL, requestObject);
 };
 
-export var getSecretSpace = function(sciURL, publicKey, timestamp, signature) {
+//###########################################################
+export var getSecretSpace = function(sciURL, publicKey, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, timestamp, signature};
+  requestObject = {publicKey, timestamp, signature, nonce};
   requestURL = sciURL + "/getSecretSpace";
   return postData(requestURL, requestObject);
 };
 
-export var getSecret = function(sciURL, publicKey, secretId, timestamp, signature) {
+export var getSubSpace = function(sciURL, publicKey, fromId, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, secretId, timestamp, signature};
+  requestObject = {publicKey, fromId, timestamp, signature, nonce};
+  requestURL = sciURL + "/getSubSpace";
+  return postData(requestURL, requestObject);
+};
+
+//###########################################################
+export var getSecret = function(sciURL, publicKey, secretId, timestamp, signature, nonce) {
+  var requestObject, requestURL;
+  requestObject = {publicKey, secretId, timestamp, signature, nonce};
   requestURL = sciURL + "/getSecret";
   return postData(requestURL, requestObject);
 };
 
-export var setSecret = function(sciURL, publicKey, secretId, secret, timestamp, signature) {
+export var setSecret = function(sciURL, publicKey, secretId, secret, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, secretId, secret, timestamp, signature};
+  requestObject = {publicKey, secretId, secret, timestamp, signature, nonce};
   requestURL = sciURL + "/setSecret";
   return postData(requestURL, requestObject);
 };
 
-export var deleteSecret = function(sciURL, publicKey, secretId, timestamp, signature) {
+export var deleteSecret = function(sciURL, publicKey, secretId, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, secretId, timestamp, signature};
+  requestObject = {publicKey, secretId, timestamp, signature, nonce};
   requestURL = sciURL + "/deleteSecret";
   return postData(requestURL, requestObject);
 };
 
-export var startAcceptingSecretsFrom = function(sciURL, publicKey, fromId, timestamp, signature) {
+//###########################################################
+export var startAcceptingSecretsFrom = function(sciURL, publicKey, fromId, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, fromId, timestamp, signature};
+  requestObject = {publicKey, fromId, timestamp, signature, nonce};
   requestURL = sciURL + "/startAcceptingSecretsFrom";
   return postData(requestURL, requestObject);
 };
 
-export var stopAcceptingSecretsFrom = function(sciURL, publicKey, fromId, timestamp, signature) {
+export var stopAcceptingSecretsFrom = function(sciURL, publicKey, fromId, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, fromId, timestamp, signature};
+  requestObject = {publicKey, fromId, timestamp, signature, nonce};
   requestURL = sciURL + "/stopAcceptingSecretsFrom";
   return postData(requestURL, requestObject);
 };
 
-export var shareSecretTo = function(sciURL, publicKey, shareToId, secretId, secret, timestamp, signature) {
+//###########################################################
+export var getSecretFrom = function(sciURL, publicKey, fromId, secretId, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, shareToId, secretId, secret, timestamp, signature};
+  requestObject = {publicKey, fromId, secretId, timestamp, signature, nonce};
+  requestURL = sciURL + "/getSecretFrom";
+  return postData(requestURL, requestObject);
+};
+
+export var shareSecretTo = function(sciURL, publicKey, shareToId, secretId, secret, timestamp, signature, nonce) {
+  var requestObject, requestURL;
+  requestObject = {publicKey, shareToId, secretId, secret, timestamp, signature, nonce};
   requestURL = sciURL + "/shareSecretTo";
   return postData(requestURL, requestObject);
 };
 
-export var deleteSharedSecret = function(sciURL, publicKey, sharedToId, secretId, timestamp, signature) {
+export var deleteSharedSecret = function(sciURL, publicKey, sharedToId, secretId, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, sharedToId, secretId, timestamp, signature};
+  requestObject = {publicKey, sharedToId, secretId, timestamp, signature, nonce};
   requestURL = sciURL + "/deleteSharedSecret";
   return postData(requestURL, requestObject);
 };
 
-export var addNotificationHook = function(sciURL, publicKey, type, specific, timestamp, signature) {
+//###########################################################
+export var addNotificationHook = function(sciURL, publicKey, type, specific, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, type, specific, timestamp, signature};
+  requestObject = {publicKey, type, specific, timestamp, signature, nonce};
   requestURL = sciURL + "/addNotificationHook";
   return postData(requestURL, requestObject);
 };
 
-export var getAuthCode = function(sciURL, publicKey, timestamp, signature) {
+export var getAuthCode = function(sciURL, publicKey, action, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, timestamp, signature};
+  requestObject = {publicKey, timestamp, action, signature, nonce};
   requestURL = sciURL + "/getAuthCode";
   return postData(requestURL, requestObject);
 };
 
+//###########################################################
 export var addFriendServer = function(sciURL, authCode, serverURL, serverNodeId) {
   var requestObject, requestURL;
   requestObject = {authCode, serverURL, serverNodeId};
