@@ -104,7 +104,7 @@ export var deleteSecret = async function(req, res) {
 export var startAcceptingSecretsFrom = async function(req, res) {
   var err, response;
   try {
-    response = (await h.startAcceptingSecretsFrom(req.body.publicKey, req.body.fromId, req.body.timestamp, req.body.signature, req.body.nonce));
+    response = (await h.startAcceptingSecretsFrom(req.body.publicKey, req.body.fromId, req.body.closureDate, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;

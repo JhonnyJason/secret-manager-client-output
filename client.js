@@ -350,7 +350,6 @@ acceptSecretsFrom = async function(fromId, closureDate, client) {
   nonce = client.nonce;
   client.incNonce();
   payload = {publicKey, fromId, closureDate, timestamp, nonce};
-  console.log(JSON.stringify(payload, null, 4));
   route = "/startAcceptingSecretsFrom";
   signature = (await createSignature(payload, route, secretKey));
   reply = (await sci.startAcceptingSecretsFrom(server, publicKey, fromId, closureDate, timestamp, signature, nonce));
@@ -368,7 +367,8 @@ stopAcceptSecretsFrom = async function(fromId, client) {
   timestamp = timestampCreator.create();
   nonce = client.nonce;
   client.incNonce();
-  payload = {publicKey, fromId, timestamp};
+  payload = {publicKey, fromId, timestamp, nonce};
+  // console.log JSON.stringify(payload, null, 4)
   route = "/stopAcceptingSecretsFrom";
   signature = (await createSignature(payload, route, secretKey));
   reply = (await sci.stopAcceptingSecretsFrom(server, publicKey, fromId, timestamp, signature, nonce));
@@ -388,7 +388,7 @@ getSecretFrom = async function(fromId, secretId, client) {
   nonce = client.nonce;
   client.incNonce();
   payload = {publicKey, fromId, secretId, timestamp, nonce};
-  route = "/getSecretSpace";
+  route = "/getSecretFrom";
   signature = (await createSignature(payload, route, secretKey));
   reply = (await sci.getSecretFrom(server, publicKey, fromId, secretId, timestamp, signature, nonce));
   if (reply.error != null) {

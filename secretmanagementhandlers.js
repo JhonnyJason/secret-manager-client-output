@@ -83,7 +83,7 @@ export var deleteSecret = async function(publicKey, secretId, timestamp, signatu
 
 //###########################################################
 export var startAcceptingSecretsFrom = async function(publicKey, fromId, closureDate, timestamp, signature, nonce) {
-  await service.addSubSpaceFor(publicKey, fromId, closureDate);
+  await service.createSubSpaceFor(publicKey, fromId, closureDate);
   return {
     ok: true
   };
