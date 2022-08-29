@@ -72,7 +72,6 @@ export var createClient = function(o) {
   } else {
     closureDate = null;
   }
-  console.log("hello!");
   return new Client(secretKeyHex, publicKeyHex, o.serverURL, closureDate, authCode);
 };
 

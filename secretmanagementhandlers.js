@@ -9,7 +9,7 @@ export var setService = function(serviceToSet) {
 };
 
 //###########################################################
-export var addNodeId = async function(authCode, publicKey, closureDate, timestamp, signature) {
+export var addNodeId = async function(authCode, publicKey, closureDate, timestamp, signature, nonce) {
   await service.addNodeId(authCode, publicKey, closureDate);
   return {
     ok: true
@@ -17,17 +17,9 @@ export var addNodeId = async function(authCode, publicKey, closureDate, timestam
 };
 
 //###########################################################
-export var removeNodeId = async function(publicKey, timestamp, signature) {
-  await service.removeNodeId(publicKey);
-  return {
-    ok: true
-  };
-};
-
-//###########################################################
-export var getSecretSpace = async function(publicKey, timestamp, signature) {
+export var getSecretSpace = async function(publicKey, timestamp, signature, nonce) {
   var eCE, eCIS, rE, rIS, secretObj;
-  secretObj = (await service.getEncryptedSecretSpace(publicKey));
+  secretObj = (await service.getSecretSpace(publicKey));
   rE = secretObj.referencePointHex != null;
   eCE = secretObj.encryptedContentHex != null;
   rIS = typeof secretObj.referencePointHex === "string";
@@ -45,7 +37,23 @@ export var getSecretSpace = async function(publicKey, timestamp, signature) {
 };
 
 //###########################################################
-export var getSecret = async function(publicKey, secretId, timestamp, signature) {
+export var removeNodeId = async function(publicKey, timestamp, signature, nonce) {
+  await service.removeNodeId(publicKey);
+  return {
+    ok: true
+  };
+};
+
+//###########################################################
+export var setSecret = async function(publicKey, secretId, secret, timestamp, signature, nonce) {
+  await service.setSecret(publicKey, secretId, secret);
+  return {
+    ok: true
+  };
+};
+
+//###########################################################
+export var getSecret = async function(publicKey, secretId, timestamp, signature, nonce) {
   var eCE, eCIS, rE, rIS, secretObj;
   secretObj = (await service.getSecret(publicKey, secretId));
   rE = secretObj.referencePointHex != null;
@@ -66,20 +74,7 @@ export var getSecret = async function(publicKey, secretId, timestamp, signature)
 
 
 //###########################################################
-export var setSecret = async function(publicKey, secretId, secret, timestamp, signature, req) {
-  var urlToSync;
-  urlToSync = service.getURLToSync(publicKey);
-  if (urlToSync != null) {
-    syncToURL(req);
-  }
-  await service.setSecret(publicKey, secretId, secret);
-  return {
-    ok: true
-  };
-};
-
-//###########################################################
-export var deleteSecret = async function(publicKey, secretId, timestamp, signature, reqData) {
+export var deleteSecret = async function(publicKey, secretId, timestamp, signature, nonce) {
   await service.deleteSecret(publicKey, secretId);
   return {
     ok: true
@@ -87,15 +82,35 @@ export var deleteSecret = async function(publicKey, secretId, timestamp, signatu
 };
 
 //###########################################################
-export var startAcceptingSecretsFrom = async function(publicKey, fromId, timestamp, signature, reqData) {
-  await service.addSubSpaceFor(publicKey, fromId);
+export var startAcceptingSecretsFrom = async function(publicKey, fromId, closureDate, timestamp, signature, nonce) {
+  await service.addSubSpaceFor(publicKey, fromId, closureDate);
   return {
     ok: true
   };
 };
 
 //###########################################################
-export var stopAcceptingSecretsFrom = async function(publicKey, fromId, timestamp, signature) {
+export var getSubSpace = async function(publicKey, fromId, timestamp, signature, nonce) {
+  var eCE, eCIS, rE, rIS, secretObj;
+  secretObj = (await service.getSubSpace(publicKey, fromId));
+  rE = secretObj.referencePointHex != null;
+  eCE = secretObj.encryptedContentHex != null;
+  rIS = typeof secretObj.referencePointHex === "string";
+  eCIS = typeof secretObj.encryptedContentHex === "string";
+  if (rE && eCE && rIS && eCIS) {
+    return secretObj;
+  }
+  /*   
+   {
+       "referencePointHex": "...",
+       "encryptedContentHex": "..."
+   }
+   */
+  throw new Error("Service returned wrong secret object format.");
+};
+
+//###########################################################
+export var stopAcceptingSecretsFrom = async function(publicKey, fromId, timestamp, signature, nonce) {
   await service.removeSubSpaceFor(publicKey, fromId);
   return {
     ok: true
@@ -103,7 +118,7 @@ export var stopAcceptingSecretsFrom = async function(publicKey, fromId, timestam
 };
 
 //###########################################################
-export var shareSecretTo = async function(publicKey, shareToId, secretId, secret, timestamp, signature) {
+export var shareSecretTo = async function(publicKey, shareToId, secretId, secret, timestamp, signature, nonce) {
   await service.shareSecretTo(publicKey, shareToId, secretId, secret);
   return {
     ok: true
@@ -111,7 +126,28 @@ export var shareSecretTo = async function(publicKey, shareToId, secretId, secret
 };
 
 //###########################################################
-export var deleteSharedSecret = function(publicKey, sharedToId, secretId, timestamp, signature) {
+export var getSecretFrom = async function(publicKey, fromId, secretId, timestamp, signature, nonce) {
+  var eCE, eCIS, rE, rIS, secretObj;
+  secretObj = (await service.getSecretFrom(publicKey, fromId, secretId));
+  rE = secretObj.referencePointHex != null;
+  eCE = secretObj.encryptedContentHex != null;
+  rIS = typeof secretObj.referencePointHex === "string";
+  eCIS = typeof secretObj.encryptedContentHex === "string";
+  if (rE && eCE && rIS && eCIS) {
+    return secretObj;
+  }
+  /*   
+   {
+       "referencePointHex": "...",
+       "encryptedContentHex": "..."
+   }
+   */
+  throw new Error("Service returned wrong secret object format.");
+};
+
+
+//###########################################################
+export var deleteSharedSecret = function(publicKey, sharedToId, secretId, timestamp, signature, nonce) {
   service.deleteSharedSecret(sharedToId, publicKey, secretId);
   return {
     ok: true
@@ -119,7 +155,7 @@ export var deleteSharedSecret = function(publicKey, sharedToId, secretId, timest
 };
 
 //###########################################################
-export var addNotificationHook = async function(publicKey, type, specific, timestamp, signature) {
+export var addNotificationHook = async function(publicKey, type, specific, timestamp, signature, nonce) {
   await service.addNotificationHook(publicKey, type, specific);
   return {
     ok: true
@@ -127,7 +163,7 @@ export var addNotificationHook = async function(publicKey, type, specific, times
 };
 
 //###########################################################
-export var getAuthCode = async function(publicKey, timestamp, signature) {
+export var getAuthCode = async function(publicKey, timestamp, signature, nonce) {
   var authCode;
   authCode = (await service.generateAuthCodeFor(publicKey));
   if (typeof authCode === "string") {

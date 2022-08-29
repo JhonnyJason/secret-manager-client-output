@@ -22,6 +22,7 @@ export var Client = class Client {
     this.closureDate = closureDate1;
     this.nonce = 0;
     if ((this.secretKeyHex != null) && (this.secretKeyHex != null)) {
+      this.id = this.publicKeyHex;
       this.secretKeyBytes = tbut.hexToBytes(this.secretKeyHex);
       this.publicKeyBytes = tbut.hexToBytes(this.publicKeyHex);
       this.keysReady = true;
@@ -88,9 +89,9 @@ export var Client = class Client {
   }
 
   //#######################################################
-  async acceptSecretsFrom(fromId) {
+  async acceptSecretsFrom(fromId, closureDate) {
     await this.ready;
-    return (await acceptSecretsFrom(fromId, this));
+    return (await acceptSecretsFrom(fromId, closureDate, this));
   }
 
   async stopAcceptSecretsFrom(fromId) {
@@ -196,6 +197,7 @@ prepareNewKeys = async function(client) {
   } else {
     client.publicKeyHex = (await secUtl.createPublicKeyHex(secretKeyHex));
   }
+  client.id = client.publicKeyHex;
   client.secretKeyBytes = tbut.hexToBytes(client.secretKeyHex);
   client.publicKeyBytes = tbut.hexToBytes(client.publicKeyHex);
   return true;
@@ -208,7 +210,6 @@ prepareNewKeys = async function(client) {
 addNodeId = async function(client, authCode) {
   var closureDate, nonce, payload, publicKey, reply, route, secretKey, server, signature, timestamp;
   await client.keysReady;
-  console.log("addNodeId called!");
   server = client.serverURL;
   secretKey = client.secretKeyHex;
   publicKey = client.publicKeyHex;
@@ -337,18 +338,22 @@ deleteSecret = async function(secretId, client) {
 };
 
 //###########################################################
-acceptSecretsFrom = async function(fromId, client) {
+acceptSecretsFrom = async function(fromId, closureDate, client) {
   var nonce, payload, publicKey, reply, route, secretKey, server, signature, timestamp;
   server = client.serverURL;
   publicKey = client.publicKeyHex;
   secretKey = client.secretKeyHex;
   timestamp = timestampCreator.create();
+  if (closureDate == null) {
+    closureDate = null;
+  }
   nonce = client.nonce;
   client.incNonce();
-  payload = {publicKey, fromId, timestamp, nonce};
+  payload = {publicKey, fromId, closureDate, timestamp, nonce};
+  console.log(JSON.stringify(payload, null, 4));
   route = "/startAcceptingSecretsFrom";
   signature = (await createSignature(payload, route, secretKey));
-  reply = (await sci.startAcceptingSecretsFrom(server, publicKey, fromId, timestamp, signature, nonce));
+  reply = (await sci.startAcceptingSecretsFrom(server, publicKey, fromId, closureDate, timestamp, signature, nonce));
   if (reply.error != null) {
     throw new Error("acceptSecretsFrom replied with error: " + reply.error);
   }

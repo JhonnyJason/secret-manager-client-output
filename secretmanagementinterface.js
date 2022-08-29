@@ -56,9 +56,9 @@ export var deleteSecret = function(sciURL, publicKey, secretId, timestamp, signa
 };
 
 //###########################################################
-export var startAcceptingSecretsFrom = function(sciURL, publicKey, fromId, timestamp, signature, nonce) {
+export var startAcceptingSecretsFrom = function(sciURL, publicKey, fromId, closureDate, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, fromId, timestamp, signature, nonce};
+  requestObject = {publicKey, fromId, closureDate, timestamp, signature, nonce};
   requestURL = sciURL + "/startAcceptingSecretsFrom";
   return postData(requestURL, requestObject);
 };
