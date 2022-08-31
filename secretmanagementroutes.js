@@ -3,10 +3,10 @@
 import * as h from "./secretmanagementhandlers";
 
 //###########################################################
-export var addNodeId = async function(req, res) {
+export var openSecretSpace = async function(req, res) {
   var err, response;
   try {
-    response = (await h.addNodeId(req.body.authCode, req.body.publicKey, req.body.closureDate, req.body.timestamp, req.body.signature, req.body.nonce));
+    response = (await h.openSecretSpace(req.body.authCode, req.body.publicKey, req.body.closureDate, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;
@@ -17,10 +17,10 @@ export var addNodeId = async function(req, res) {
 };
 
 //###########################################################
-export var removeNodeId = async function(req, res) {
+export var deleteSecretSpace = async function(req, res) {
   var err, response;
   try {
-    response = (await h.removeNodeId(req.body.publicKey, req.body.timestamp, req.body.signature, req.body.nonce));
+    response = (await h.deleteSecretSpace(req.body.publicKey, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;
@@ -45,10 +45,10 @@ export var getSecretSpace = async function(req, res) {
 };
 
 //###########################################################
-export var getSubSpace = async function(req, res) {
+export var setSecret = async function(req, res) {
   var err, response;
   try {
-    response = (await h.getSubSpace(req.body.publicKey, req.body.fromId, req.body.timestamp, req.body.signature, req.body.nonce));
+    response = (await h.setSecret(req.body.publicKey, req.body.secretId, req.body.secret, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;
@@ -73,20 +73,6 @@ export var getSecret = async function(req, res) {
 };
 
 //###########################################################
-export var setSecret = async function(req, res) {
-  var err, response;
-  try {
-    response = (await h.setSecret(req.body.publicKey, req.body.secretId, req.body.secret, req.body.timestamp, req.body.signature, req.body.nonce));
-    res.send(response);
-  } catch (error) {
-    err = error;
-    res.send({
-      error: err.stack
-    });
-  }
-};
-
-//###########################################################
 export var deleteSecret = async function(req, res) {
   var err, response;
   try {
@@ -101,10 +87,10 @@ export var deleteSecret = async function(req, res) {
 };
 
 //###########################################################
-export var startAcceptingSecretsFrom = async function(req, res) {
+export var openSubSpace = async function(req, res) {
   var err, response;
   try {
-    response = (await h.startAcceptingSecretsFrom(req.body.publicKey, req.body.fromId, req.body.closureDate, req.body.timestamp, req.body.signature, req.body.nonce));
+    response = (await h.openSubSpace(req.body.publicKey, req.body.fromId, req.body.closureDate, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;
@@ -115,10 +101,38 @@ export var startAcceptingSecretsFrom = async function(req, res) {
 };
 
 //###########################################################
-export var stopAcceptingSecretsFrom = async function(req, res) {
+export var getSubSpace = async function(req, res) {
   var err, response;
   try {
-    response = (await h.stopAcceptingSecretsFrom(req.body.publicKey, req.body.fromId, req.body.timestamp, req.body.signature, req.body.nonce));
+    response = (await h.getSubSpace(req.body.publicKey, req.body.fromId, req.body.timestamp, req.body.signature, req.body.nonce));
+    res.send(response);
+  } catch (error) {
+    err = error;
+    res.send({
+      error: err.stack
+    });
+  }
+};
+
+//###########################################################
+export var deleteSubSpace = async function(req, res) {
+  var err, response;
+  try {
+    response = (await h.deleteSubSpace(req.body.publicKey, req.body.fromId, req.body.timestamp, req.body.signature, req.body.nonce));
+    res.send(response);
+  } catch (error) {
+    err = error;
+    res.send({
+      error: err.stack
+    });
+  }
+};
+
+//###########################################################
+export var shareSecretTo = async function(req, res) {
+  var err, response;
+  try {
+    response = (await h.shareSecretTo(req.body.publicKey, req.body.shareToId, req.body.secretId, req.body.secret, req.body.oneTimeSecret, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;
@@ -133,20 +147,6 @@ export var getSecretFrom = async function(req, res) {
   var err, response;
   try {
     response = (await h.getSecretFrom(req.body.publicKey, req.body.fromId, req.body.secretId, req.body.timestamp, req.body.signature, req.body.nonce));
-    res.send(response);
-  } catch (error) {
-    err = error;
-    res.send({
-      error: err.stack
-    });
-  }
-};
-
-//###########################################################
-export var shareSecretTo = async function(req, res) {
-  var err, response;
-  try {
-    response = (await h.shareSecretTo(req.body.publicKey, req.body.shareToId, req.body.secretId, req.body.secret, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;
@@ -174,7 +174,7 @@ export var deleteSharedSecret = async function(req, res) {
 export var addNotificationHook = async function(req, res) {
   var err, response;
   try {
-    response = (await h.addNotificationHook(req.body.publicKey, req.body.type, req.body.specific, req.body.timestamp, req.body.signature, req.body.nonce));
+    response = (await h.addNotificationHook(req.body.publicKey, req.body.type, req.body.targetId, req.body.notifyURL, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;
@@ -185,10 +185,10 @@ export var addNotificationHook = async function(req, res) {
 };
 
 //###########################################################
-export var getAuthCode = async function(req, res) {
+export var getNotificationHooks = async function(req, res) {
   var err, response;
   try {
-    response = (await h.getAuthCode(req.body.publicKey, req.body.timestamp, req.body.signature, req.body.nonce));
+    response = (await h.getNotificationHooks(req.body.publicKey, req.body.targetId, req.body.timestamp, req.body.signature, req.body.nonce));
     res.send(response);
   } catch (error) {
     err = error;
@@ -199,10 +199,38 @@ export var getAuthCode = async function(req, res) {
 };
 
 //###########################################################
-export var addFriendServer = async function(req, res) {
+export var deleteNotificationHook = async function(req, res) {
   var err, response;
   try {
-    response = (await h.addFriendServer(req.body.authCode, req.body.serverURL, req.body.serverNodeId));
+    response = (await h.deleteNotificationHook(req.body.publicKey, req.body.notificationHookId, req.body.timestamp, req.body.signature, req.body.nonce));
+    res.send(response);
+  } catch (error) {
+    err = error;
+    res.send({
+      error: err.stack
+    });
+  }
+};
+
+//###########################################################
+export var createAuthCode = async function(req, res) {
+  var err, response;
+  try {
+    response = (await h.createAuthCode(req.body.publicKey, req.body.timestamp, req.body.signature, req.body.nonce));
+    res.send(response);
+  } catch (error) {
+    err = error;
+    res.send({
+      error: err.stack
+    });
+  }
+};
+
+//###########################################################
+export var setRequestableServer = async function(req, res) {
+  var err, response;
+  try {
+    response = (await h.setRequestableServer(req.body.authCode, req.body.serverURL, req.body.serverNodeId));
     res.send(response);
   } catch (error) {
     err = error;

@@ -9,8 +9,8 @@ export var setService = function(serviceToSet) {
 };
 
 //###########################################################
-export var addNodeId = async function(authCode, publicKey, closureDate, timestamp, signature, nonce) {
-  await service.addNodeId(authCode, publicKey, closureDate);
+export var openSecretSpace = async function(authCode, publicKey, closureDate, timestamp, signature, nonce) {
+  await service.openSecretSpace(authCode, publicKey, closureDate);
   return {
     ok: true
   };
@@ -37,8 +37,8 @@ export var getSecretSpace = async function(publicKey, timestamp, signature, nonc
 };
 
 //###########################################################
-export var removeNodeId = async function(publicKey, timestamp, signature, nonce) {
-  await service.removeNodeId(publicKey);
+export var deleteSecretSpace = async function(publicKey, timestamp, signature, nonce) {
+  await service.deleteSecretSpace(publicKey);
   return {
     ok: true
   };
@@ -82,7 +82,7 @@ export var deleteSecret = async function(publicKey, secretId, timestamp, signatu
 };
 
 //###########################################################
-export var startAcceptingSecretsFrom = async function(publicKey, fromId, closureDate, timestamp, signature, nonce) {
+export var openSubSpace = async function(publicKey, fromId, closureDate, timestamp, signature, nonce) {
   await service.createSubSpaceFor(publicKey, fromId, closureDate);
   return {
     ok: true
@@ -110,7 +110,7 @@ export var getSubSpace = async function(publicKey, fromId, timestamp, signature,
 };
 
 //###########################################################
-export var stopAcceptingSecretsFrom = async function(publicKey, fromId, timestamp, signature, nonce) {
+export var deleteSubSpace = async function(publicKey, fromId, timestamp, signature, nonce) {
   await service.removeSubSpaceFor(publicKey, fromId);
   return {
     ok: true
@@ -118,8 +118,8 @@ export var stopAcceptingSecretsFrom = async function(publicKey, fromId, timestam
 };
 
 //###########################################################
-export var shareSecretTo = async function(publicKey, shareToId, secretId, secret, timestamp, signature, nonce) {
-  await service.shareSecretTo(publicKey, shareToId, secretId, secret);
+export var shareSecretTo = async function(publicKey, shareToId, secretId, secret, oneTimeSecret, timestamp, signature, nonce) {
+  await service.shareSecretTo(publicKey, shareToId, secretId, secret, oneTimeSecret);
   return {
     ok: true
   };
@@ -155,15 +155,33 @@ export var deleteSharedSecret = function(publicKey, sharedToId, secretId, timest
 };
 
 //###########################################################
-export var addNotificationHook = async function(publicKey, type, specific, timestamp, signature, nonce) {
-  await service.addNotificationHook(publicKey, type, specific);
+export var addNotificationHook = async function(publicKey, type, targetId, notifyURL, timestamp, signature, nonce) {
+  var notificationHookId;
+  notificationHookId = (await service.addNotificationHook(publicKey, type, targetId, notifyURL));
+  if (typeof notificationHookId !== "string") {
+    throw new Error("Service did not return a string for the notificationHookId.");
+  }
+  return {notificationHookId};
+};
+
+export var getNotificationHooks = async function(publicKey, targetId, timestamp, signature, nonce) {
+  var notificationHooks;
+  notificationHooks = (await service.getNotificationHooks(publicKey, targetId));
+  if (!Array.isArray(notificationHooks)) {
+    throw new Error("Service did not return an Array for the notificationHooks.");
+  }
+  return {notificationHooks};
+};
+
+export var deleteNotificationHook = async function(publicKey, notificationHookId, timestamp, signature, nonce) {
+  await service.deleteNotificationHook(publicKey, notificationHookId);
   return {
     ok: true
   };
 };
 
 //###########################################################
-export var getAuthCode = async function(publicKey, timestamp, signature, nonce) {
+export var createAuthCode = async function(publicKey, timestamp, signature, nonce) {
   var authCode;
   authCode = (await service.generateAuthCodeFor(publicKey));
   if (typeof authCode === "string") {
@@ -178,8 +196,8 @@ export var getAuthCode = async function(publicKey, timestamp, signature, nonce) 
 };
 
 //###########################################################
-export var addFriendServer = async function(authCode, serverURL, serverNodeId) {
-  await service.addFriendServer(serverURL, serverNodeId);
+export var setRequestableServer = async function(authCode, serverURL, serverNodeId) {
+  await service.setRequestableServer(serverURL, serverNodeId);
   return {
     ok: true
   };
