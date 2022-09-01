@@ -9,6 +9,44 @@ export var setService = function(serviceToSet) {
 };
 
 //###########################################################
+export var getNodeId = async function(authCode) {
+  var result, sE, sIS, sNIE, sNIIS, tSE, tSIN;
+  result = (await service.getSignedNodeId(authCode));
+  sNIE = result.serverNodeId != null;
+  tSE = result.timestamp != null;
+  sE = result.signature != null;
+  sNIIS = typeof result.serverNodeId === "string";
+  tSIN = typeof result.timestamp === "number";
+  sIS = typeof result.signature === "string";
+  if (sNIE && tSE && sE && sNIIS && tSIN && sIS) {
+    return result;
+  }
+  /*
+  {
+      "publicKey": "...",
+      "timestamp": "...",
+      "signature": "..."
+  }
+  */
+  throw new Error("Service returned wrong signedNodeId Object format.");
+};
+
+//###########################################################
+export var createAuthCode = async function(publicKey, timestamp, signature, nonce) {
+  var authCode;
+  authCode = (await service.generateAuthCodeFor(publicKey));
+  if (typeof authCode === "string") {
+    return {authCode};
+  }
+  /*   
+   {
+       "authCode": "..."
+   }
+   */
+  throw new Error("Service returned wrong authCode type.");
+};
+
+//###########################################################
 export var openSecretSpace = async function(authCode, publicKey, closureDate, timestamp, signature, nonce) {
   await service.openSecretSpace(authCode, publicKey, closureDate);
   return {
@@ -181,47 +219,9 @@ export var deleteNotificationHook = async function(publicKey, notificationHookId
 };
 
 //###########################################################
-export var createAuthCode = async function(publicKey, timestamp, signature, nonce) {
-  var authCode;
-  authCode = (await service.generateAuthCodeFor(publicKey));
-  if (typeof authCode === "string") {
-    return {authCode};
-  }
-  /*   
-   {
-       "authCode": "..."
-   }
-   */
-  throw new Error("Service returned wrong authCode type.");
-};
-
-//###########################################################
 export var setRequestableServer = async function(authCode, serverURL, serverNodeId) {
   await service.setRequestableServer(serverURL, serverNodeId);
   return {
     ok: true
   };
-};
-
-//###########################################################
-export var getNodeId = async function(authCode) {
-  var pKE, pKEIS, result, sE, sEIS, tSE, tSEIS;
-  result = (await service.getSignedNodeId());
-  pKE = result.publicKey != null;
-  tSE = result.timestamp != null;
-  sE = result.signature != null;
-  pKEIS = typeof result.publicKey === "string";
-  tSEIS = typeof result.timestamp === "string";
-  sEIS = typeof result.signature === "string";
-  if (pKE && tSE && sE && pKEIS && tSEIS && sEIS) {
-    return result;
-  }
-  /*
-  {
-      "publicKey": "...",
-      "timestamp": "...",
-      "signature": "..."
-  }
-  */
-  throw new Error("Service returned wrong signedNodeId Object format.");
 };

@@ -4,6 +4,21 @@ import {
 } from "thingy-network-base";
 
 //###########################################################
+export var getNodeId = function(sciURL, authCode) {
+  var requestObject, requestURL;
+  requestObject = {authCode};
+  requestURL = sciURL + "/getNodeId";
+  return postData(requestURL, requestObject);
+};
+
+export var createAuthCode = function(sciURL, publicKey, action, timestamp, signature, nonce) {
+  var requestObject, requestURL;
+  requestObject = {publicKey, timestamp, action, signature, nonce};
+  requestURL = sciURL + "/createAuthCode";
+  return postData(requestURL, requestObject);
+};
+
+//###########################################################
 export var openSecretSpace = function(sciURL, authCode, publicKey, closureDate, timestamp, signature, nonce) {
   var requestObject, requestURL;
   requestObject = {authCode, publicKey, closureDate, timestamp, signature, nonce};
@@ -123,18 +138,3 @@ export var setRequestableServer = function(sciURL, authCode, serverURL, serverNo
 };
 
 //#TODO requestable Server stuff
-
-//###########################################################
-export var createAuthCode = function(sciURL, publicKey, action, timestamp, signature, nonce) {
-  var requestObject, requestURL;
-  requestObject = {publicKey, timestamp, action, signature, nonce};
-  requestURL = sciURL + "/createAuthCode";
-  return postData(requestURL, requestObject);
-};
-
-export var getNodeId = function(sciURL, authCode) {
-  var requestObject, requestURL;
-  requestObject = {authCode};
-  requestURL = sciURL + "/getNodeId";
-  return postData(requestURL, requestObject);
-};

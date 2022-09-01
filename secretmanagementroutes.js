@@ -3,6 +3,34 @@
 import * as h from "./secretmanagementhandlers";
 
 //###########################################################
+export var getNodeId = async function(req, res) {
+  var err, response;
+  try {
+    response = (await h.getNodeId(req.body.authCode));
+    res.send(response);
+  } catch (error) {
+    err = error;
+    res.send({
+      error: err.stack
+    });
+  }
+};
+
+//###########################################################
+export var createAuthCode = async function(req, res) {
+  var err, response;
+  try {
+    response = (await h.createAuthCode(req.body.publicKey, req.body.timestamp, req.body.signature, req.body.nonce));
+    res.send(response);
+  } catch (error) {
+    err = error;
+    res.send({
+      error: err.stack
+    });
+  }
+};
+
+//###########################################################
 export var openSecretSpace = async function(req, res) {
   var err, response;
   try {
@@ -213,38 +241,10 @@ export var deleteNotificationHook = async function(req, res) {
 };
 
 //###########################################################
-export var createAuthCode = async function(req, res) {
-  var err, response;
-  try {
-    response = (await h.createAuthCode(req.body.publicKey, req.body.timestamp, req.body.signature, req.body.nonce));
-    res.send(response);
-  } catch (error) {
-    err = error;
-    res.send({
-      error: err.stack
-    });
-  }
-};
-
-//###########################################################
 export var setRequestableServer = async function(req, res) {
   var err, response;
   try {
     response = (await h.setRequestableServer(req.body.authCode, req.body.serverURL, req.body.serverNodeId));
-    res.send(response);
-  } catch (error) {
-    err = error;
-    res.send({
-      error: err.stack
-    });
-  }
-};
-
-//###########################################################
-export var getNodeId = async function(req, res) {
-  var err, response;
-  try {
-    response = (await h.getNodeId(req.body.authCode));
     res.send(response);
   } catch (error) {
     err = error;
