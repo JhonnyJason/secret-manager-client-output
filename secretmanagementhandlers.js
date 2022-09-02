@@ -149,7 +149,7 @@ export var getSubSpace = async function(publicKey, fromId, timestamp, signature,
 
 //###########################################################
 export var deleteSubSpace = async function(publicKey, fromId, timestamp, signature, nonce) {
-  await service.removeSubSpaceFor(publicKey, fromId);
+  await service.deleteSubSpaceFor(publicKey, fromId);
   return {
     ok: true
   };
