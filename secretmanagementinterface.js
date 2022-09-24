@@ -13,7 +13,7 @@ export var getNodeId = function(sciURL, authCode) {
 
 export var createAuthCode = function(sciURL, publicKey, action, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, timestamp, action, signature, nonce};
+  requestObject = {publicKey, action, timestamp, signature, nonce};
   requestURL = sciURL + "/createAuthCode";
   return postData(requestURL, requestObject);
 };
@@ -93,9 +93,9 @@ export var getSecretFrom = function(sciURL, publicKey, fromId, secretId, timesta
   return postData(requestURL, requestObject);
 };
 
-export var shareSecretTo = function(sciURL, publicKey, shareToId, secretId, secret, oneTimeSecret, timestamp, signature, nonce) {
+export var shareSecretTo = function(sciURL, publicKey, shareToId, secretId, secret, isOneTimeSecret, timestamp, signature, nonce) {
   var requestObject, requestURL;
-  requestObject = {publicKey, shareToId, secretId, secret, oneTimeSecret, timestamp, signature, nonce};
+  requestObject = {publicKey, shareToId, secretId, secret, isOneTimeSecret, timestamp, signature, nonce};
   requestURL = sciURL + "/shareSecretTo";
   return postData(requestURL, requestObject);
 };
@@ -126,14 +126,6 @@ export var deleteNotificationHook = function(sciURL, publicKey, notificationHook
   var requestObject, requestURL;
   requestObject = {publicKey, notificationHookId, timestamp, signature, nonce};
   requestURL = sciURL + "/deleteNotificationHook";
-  return postData(requestURL, requestObject);
-};
-
-//###########################################################
-export var setRequestableServer = function(sciURL, authCode, serverURL, serverNodeId) {
-  var requestObject, requestURL;
-  requestObject = {authCode, serverURL, serverNodeId};
-  requestURL = sciURL + "/setRequestableServer";
   return postData(requestURL, requestObject);
 };
 
