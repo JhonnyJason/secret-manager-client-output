@@ -21,7 +21,7 @@ export var ARRAY = 7;
 
 export var NUMBERORNULL = 8;
 
-export var STRINGORUNDEFINED = 9;
+export var STRINGORNULL = 9;
 
 //###########################################################
 assertionFunctions = new Array(10);
@@ -135,12 +135,12 @@ assertionFunctions[NUMBERORNULL] = function(arg) {
   }
 };
 
-assertionFunctions[STRINGORUNDEFINED] = function(arg) {
-  if (typeof arg === "undefined") {
+assertionFunctions[STRINGORNULL] = function(arg) {
+  if (arg === null) {
     return;
   }
   if (typeof arg !== "string") {
-    throw new Error("Neither a number nor undefined!");
+    throw new Error("Neither a number nor null!");
   }
 };
 

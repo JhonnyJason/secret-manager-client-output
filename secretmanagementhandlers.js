@@ -13,7 +13,7 @@ import {
   ARRAY,
   assertStructureAndTypes,
   NUMBERORNULL,
-  STRINGORUNDEFINED
+  STRINGORNULL
 } from "./checkStructureAndTypes.js";
 
 //###########################################################
@@ -206,7 +206,7 @@ addNotificationHookResponse = {
   id: STRINGHEX32,
   type: STRING,
   url: STRING,
-  error: STRINGORUNDEFINED
+  error: STRINGORNULL
 };
 
 //###########################################################
