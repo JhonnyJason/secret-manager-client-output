@@ -21,7 +21,7 @@ export var ARRAY = 7;
 
 export var NUMBERORNULL = 8;
 
-export var STRINGORNULL = 9;
+export var OBJECT = 9;
 
 //###########################################################
 assertionFunctions = new Array(10);
@@ -135,12 +135,9 @@ assertionFunctions[NUMBERORNULL] = function(arg) {
   }
 };
 
-assertionFunctions[STRINGORNULL] = function(arg) {
-  if (arg === null) {
-    return;
-  }
-  if (typeof arg !== "string") {
-    throw new Error("Neither a number nor null!");
+assertionFunctions[OBJECT] = function(arg) {
+  if (typeof arg !== "object") {
+    throw new Error("Not an Object!");
   }
 };
 
