@@ -5,6 +5,10 @@ var addNotificationHookArguments, authenticateRequest, createAuthCodeArguments, 
 import * as h from "./secretmanagementhandlers";
 
 import {
+  performance
+} from "node:perf_hooks";
+
+import {
   //###########################################################
   NUMBER,
   STRING,
@@ -44,7 +48,8 @@ createAuthCodeArguments = {
 
 //###########################################################
 export var getNodeId = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, getNodeIdArguments);
   } catch (error) {
@@ -69,12 +74,16 @@ export var getNodeId = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/getNodeId took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var createAuthCode = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, createAuthCodeArguments);
   } catch (error) {
@@ -99,6 +108,9 @@ export var createAuthCode = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/createAuthCode took ${diffMS}ms`);
   return res.send(response);
 };
 
@@ -135,7 +147,8 @@ deleteSecretSpaceArguments = {
 
 //###########################################################
 export var openSecretSpace = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, openSecretSpaceArguments);
   } catch (error) {
@@ -160,12 +173,16 @@ export var openSecretSpace = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/openSecretSpace took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var getSecretSpace = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, getSecretSpaceArguments);
   } catch (error) {
@@ -190,12 +207,16 @@ export var getSecretSpace = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/getSecretSpace took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var deleteSecretSpace = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, deleteSecretSpaceArguments);
   } catch (error) {
@@ -220,6 +241,9 @@ export var deleteSecretSpace = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/deleteSecretSpace took ${diffMS}ms`);
   return res.send(response);
 };
 
@@ -258,7 +282,8 @@ deleteSecretArguments = {
 
 //###########################################################
 export var setSecret = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, setSecretArguments);
   } catch (error) {
@@ -283,12 +308,16 @@ export var setSecret = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/setSecret took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var getSecret = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, getSecretArguments);
   } catch (error) {
@@ -313,12 +342,16 @@ export var getSecret = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/getSecret took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var deleteSecret = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, deleteSecretArguments);
   } catch (error) {
@@ -343,6 +376,9 @@ export var deleteSecret = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/deleteSecret took ${diffMS}ms`);
   return res.send(response);
 };
 
@@ -381,7 +417,8 @@ deleteSubSpaceArguments = {
 
 //###########################################################
 export var openSubSpace = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, openSubSpaceArguments);
   } catch (error) {
@@ -406,12 +443,16 @@ export var openSubSpace = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/openSubSpace took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var getSubSpace = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, getSubSpaceArguments);
   } catch (error) {
@@ -436,12 +477,16 @@ export var getSubSpace = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/getSubSpace took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var deleteSubSpace = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, deleteSubSpaceArguments);
   } catch (error) {
@@ -466,6 +511,9 @@ export var deleteSubSpace = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/deleteSubSpace took ${diffMS}ms`);
   return res.send(response);
 };
 
@@ -509,7 +557,8 @@ deleteSharedSecretArguments = {
 
 //###########################################################
 export var shareSecretTo = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, shareSecretToArguments);
   } catch (error) {
@@ -534,12 +583,16 @@ export var shareSecretTo = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/shareSecretTo took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var getSecretFrom = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, getSecretFromArguments);
   } catch (error) {
@@ -564,12 +617,16 @@ export var getSecretFrom = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/getSecretFrom took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var deleteSharedSecret = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, deleteSharedSecretArguments);
   } catch (error) {
@@ -594,6 +651,9 @@ export var deleteSharedSecret = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/deleteSharedSecret took ${diffMS}ms`);
   return res.send(response);
 };
 
@@ -633,7 +693,8 @@ deleteNotificationHookArguments = {
 
 //###########################################################
 export var addNotificationHook = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, addNotificationHookArguments);
   } catch (error) {
@@ -658,12 +719,16 @@ export var addNotificationHook = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/addNotificationHook took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var getNotificationHooks = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, getNotificationHooksArguments);
   } catch (error) {
@@ -688,12 +753,16 @@ export var getNotificationHooks = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/getNotificationHooks took ${diffMS}ms`);
   return res.send(response);
 };
 
 //###########################################################
 export var deleteNotificationHook = async function(req, res) {
-  var err, response;
+  var diffMS, end, err, response, start;
+  start = performance.now();
   try {
     assertStructureAndTypes(req.body, deleteNotificationHookArguments);
   } catch (error) {
@@ -718,6 +787,9 @@ export var deleteNotificationHook = async function(req, res) {
       error: err.message
     });
   }
+  end = performance.now();
+  diffMS = end - start;
+  console.log(`/deleteNotificationHook took ${diffMS}ms`);
   return res.send(response);
 };
 
